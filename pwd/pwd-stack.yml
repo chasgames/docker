@@ -13,7 +13,6 @@ services:
     hostname: librenms
     depends_on:
       - db
-      - cron
     ports:
       - "80:80"
     volumes:
