@@ -13,6 +13,7 @@ services:
     hostname: librenms
     depends_on:
       - db
+      - cron
     ports:
       - "80:80"
     volumes:
@@ -41,11 +42,6 @@ services:
       - "LIBRENMS_CRON_CHECK_SERVICES_ENABLE=true"
       - "LIBRENMS_CRON_POLLER_ENABLE=true"
       - "LIBRENMS_SNMP_COMMUNITY=librenmsdocker"
-      - "MEMORY_LIMIT=256M"
-      - "MEMCACHED_HOST=memcached"
-      - "MEMCACHED_PORT=11211"
-      - "RRDCACHED_HOST=rrdcached"
-      - "RRDCACHED_PORT=42217"
       - "counttables=0"
     restart: unless-stopped
 
@@ -67,4 +63,40 @@ services:
       - "MYSQL_DATABASE=librenms"
       - "MYSQL_USER=librenms"
       - "MYSQL_PASSWORD=librenmsdemo"
+    restart: always
+
+  cron:
+    image: librenms/librenms:latest
+    container_name: pwd_librenms_cron
+    hostname: librenms
+    depends_on:
+      - librenms
+    volumes:
+      - librenms:/data
+    environment:
+      - "TZ=Europe/London"
+      - "PUID=1001"
+      - "PGID=1001"
+      - "DB_HOST=db"
+      - "DB_NAME=librenms"
+      - "DB_USER=librenms"
+      - "DB_PASSWORD=librenmsdemo"
+      - "DB_TIMEOUT=30"
+      - "UPLOAD_MAX_SIZE=16M"
+      - "OPCACHE_MEM_SIZE=128"
+      - "REAL_IP_FROM=0.0.0.0/32"
+      - "REAL_IP_HEADER=X-Forwarded-For"
+      - "LOG_IP_VAR=http_x_forwarded_for"
+      - "LIBRENMS_POLLER_THREADS=16"
+      - "LIBRENMS_POLLER_INTERVAL=5"
+      - "LIBRENMS_CRON_DISCOVERY_ENABLE=true"
+      - "LIBRENMS_CRON_DAILY_ENABLE=true"
+      - "LIBRENMS_CRON_ALERTS_ENABLE=true"
+      - "LIBRENMS_CRON_BILLING_ENABLE=true"
+      - "LIBRENMS_CRON_BILLING_CALCULATE_ENABLE=true"
+      - "LIBRENMS_CRON_CHECK_SERVICES_ENABLE=true"
+      - "LIBRENMS_CRON_POLLER_ENABLE=true"
+      - "LIBRENMS_SNMP_COMMUNITY=librenmsdocker"
+      - "MEMORY_LIMIT=256M"
+      - "SIDECAR_CRON=1"
     restart: always
