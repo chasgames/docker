@@ -1,5 +1,11 @@
 version: "3.5"
 
+volumes:
+    librenms:
+        driver: local
+    db:
+        driver: local
+
 services:
   librenms:
     image: librenms/librenms:latest
@@ -10,7 +16,7 @@ services:
     ports:
       - "80:80"
     volumes:
-      - "./librenms:/data"
+      - librenms:/data
     environment:
       - "TZ=Europe/London"
       - "PUID=1001"
@@ -54,7 +60,7 @@ services:
       - "--character-set-server=utf8"
       - "--collation-server=utf8_unicode_ci"
     volumes:
-      - "./db:/var/lib/mysql"
+      - db:/var/lib/mysql
     environment:
       - "TZ=Europe/London"
       - "MYSQL_ALLOW_EMPTY_PASSWORD=yes"
