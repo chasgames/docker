@@ -6,11 +6,16 @@ volumes:
     db:
         driver: local
 
+networks:
+  main:
+  
 services:
   librenms:
     image: librenms/librenms:latest
     container_name: pwd_librenms
     hostname: librenms
+    networks:
+      - main
     depends_on:
       - db
     ports:
@@ -47,6 +52,8 @@ services:
   db:
     image: mariadb:10.2
     container_name: pwd_librenms_db
+    networks:
+      - main
     command:
       - "mysqld"
       - "--sql-mode="
@@ -68,6 +75,8 @@ services:
     image: librenms/librenms:latest
     container_name: pwd_librenms_cron
     hostname: librenms
+    networks:
+      - main
     volumes:
       - librenms:/data
     environment:
