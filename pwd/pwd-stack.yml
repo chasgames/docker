@@ -69,8 +69,6 @@ services:
     image: librenms/librenms:latest
     container_name: pwd_librenms_cron
     hostname: librenms
-    depends_on:
-      - librenms
     volumes:
       - librenms:/data
     environment:
