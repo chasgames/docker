@@ -8,7 +8,7 @@ services:
     depends_on:
       - db
     ports:
-      - "1480:80"
+      - "80:80"
     volumes:
       - "./librenms:/data"
     environment:
