@@ -47,9 +47,8 @@ services:
       - "LIBRENMS_CRON_POLLER_ENABLE=true"
       - "LIBRENMS_SNMP_COMMUNITY=librenmsdocker"
       - "counttables=0"
-    restart: unless-stopped
     command:
-      - /bin/sh
+      - /bin/bash
       - -c
       - |
         touch /opt/librenms/logs/librenms.log
@@ -57,6 +56,8 @@ services:
         su librenms -c /opt/librenms/daily.sh
         /opt/librenms/adduser.php admin admin 10
         /entrypoint.sh /usr/bin/supervisord -c /etc/supervisord.conf
+    restart: unless-stopped
+
 
   db:
     image: mariadb:10.2
