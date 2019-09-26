@@ -51,11 +51,11 @@ services:
       - /bin/bash
       - -c
       - |
+        /entrypoint.sh /usr/bin/supervisord -c /etc/supervisord.conf
         touch /opt/librenms/logs/librenms.log
         chown -R librenms:librenms /opt/librenms
         su librenms -c /opt/librenms/daily.sh
         /opt/librenms/adduser.php admin admin 10
-        /entrypoint.sh /usr/bin/supervisord -c /etc/supervisord.conf
     restart: unless-stopped
 
 
