@@ -47,6 +47,7 @@ services:
       - "LIBRENMS_CRON_POLLER_ENABLE=true"
       - "LIBRENMS_SNMP_COMMUNITY=librenmsdocker"
       - "counttables=0"
+      - "SIDECAR_CRON=0"
     entrypoint: /bin/bash -c "/entrypoint.sh /usr/bin/supervisord -c /etc/supervisord.conf"
     command: /bin/bash -c "echo HELLO && touch /opt/librenms/logs/librenms.log && chown -R librenms:librenms /opt/librenms && su librenms -c /opt/librenms/daily.sh && /opt/librenms/adduser.php admin admin 10 && echo DONE TAILING DEV NULL lol && tail -f /dev/null"
 #    command:
@@ -83,38 +84,3 @@ services:
       - "MYSQL_PASSWORD=librenmsdemo"
     restart: always
 
-  cron:
-    image: librenms/librenms:latest
-    container_name: pwd_librenms_cron
-    hostname: librenms
-    networks:
-      - main
-    volumes:
-      - librenms:/data
-    environment:
-      - "TZ=Europe/London"
-      - "PUID=1001"
-      - "PGID=1001"
-      - "DB_HOST=db"
-      - "DB_NAME=librenms"
-      - "DB_USER=librenms"
-      - "DB_PASSWORD=librenmsdemo"
-      - "DB_TIMEOUT=30"
-      - "UPLOAD_MAX_SIZE=16M"
-      - "OPCACHE_MEM_SIZE=128"
-      - "REAL_IP_FROM=0.0.0.0/32"
-      - "REAL_IP_HEADER=X-Forwarded-For"
-      - "LOG_IP_VAR=http_x_forwarded_for"
-      - "LIBRENMS_POLLER_THREADS=16"
-      - "LIBRENMS_POLLER_INTERVAL=5"
-      - "LIBRENMS_CRON_DISCOVERY_ENABLE=true"
-      - "LIBRENMS_CRON_DAILY_ENABLE=true"
-      - "LIBRENMS_CRON_ALERTS_ENABLE=true"
-      - "LIBRENMS_CRON_BILLING_ENABLE=true"
-      - "LIBRENMS_CRON_BILLING_CALCULATE_ENABLE=true"
-      - "LIBRENMS_CRON_CHECK_SERVICES_ENABLE=true"
-      - "LIBRENMS_CRON_POLLER_ENABLE=true"
-      - "LIBRENMS_SNMP_COMMUNITY=librenmsdocker"
-      - "MEMORY_LIMIT=256M"
-      - "SIDECAR_CRON=1"
-    restart: always
