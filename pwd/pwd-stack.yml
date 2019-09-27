@@ -57,6 +57,8 @@ services:
         chown -R librenms:librenms /opt/librenms
         su librenms -c /opt/librenms/daily.sh
         /opt/librenms/adduser.php admin admin 10
+        /opt/librenms/adduser.php librenms librenms 10
+        /opt/librenms/adduser.php demo demo 10
         /usr/bin/supervisord -c /etc/supervisord.conf
     restart: unless-stopped
 
