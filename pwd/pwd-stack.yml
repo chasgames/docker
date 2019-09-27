@@ -60,6 +60,9 @@ services:
         /opt/librenms/adduser.php librenms librenms 10
         /opt/librenms/adduser.php demo demo 10
         /usr/bin/supervisord -c /etc/supervisord.conf
+        /usr/bin/crontab /opt/librenms/librenms.nonroot.cron
+        /opt/librenms/addhost.php -P 1.1.1.1
+        /opt/librenms/addhost.php demo.snmplabs.com public 161
     restart: unless-stopped
 
 
