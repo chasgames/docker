@@ -49,7 +49,7 @@ services:
       - "counttables=0"
       - "SIDECAR_CRON=0"
 #    command: /bin/bash -c "echo HELLO && touch /opt/librenms/logs/librenms.log && chown -R librenms:librenms /opt/librenms && su librenms -c /opt/librenms/daily.sh && /opt/librenms/adduser.php admin admin 10 && echo DONE TAILING DEV NULL lol && tail -f /dev/null"
-   command:
+    command:
       - /bin/bash
       - -c
       - |
@@ -58,7 +58,7 @@ services:
         su librenms -c /opt/librenms/daily.sh
         /opt/librenms/adduser.php admin admin 10
         /usr/bin/supervisord -c /etc/supervisord.conf
-   restart: unless-stopped
+    restart: unless-stopped
 
 
   db:
